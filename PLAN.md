@@ -96,6 +96,40 @@ The run reported 1 on the global grid and 9 on the Atlantic at 0.08° — of
 cores that a fine one resolves. Still absent-and-reported rather than
 understated.
 
+### 2026-08-31, later still: the tier that has no gaps
+
+The 0.08° Atlantic region was reported coarse over the Gulf twice — at zoom
+5.1, then again at 4.8 further west. Both times the data was right and the map
+would not ask for it: **a region is used only when the whole viewport fits
+inside it**, and a Gulf-centered view pokes out of the Atlantic box's western
+edge and the Pacific box's eastern edge at the same time.
+
+**Widening boxes does not converge**, which is what made this a design
+question rather than another number. At the region minZoom of 4 a viewport is
+127° wide, so containing every view needs a box ~63° larger than its basin on
+each side — for the Atlantic, most of the globe.
+
+**A single 0.08° band over all longitudes was priced and refused.** It fixes
+longitude for free, since spanning 360° takes `regionCovers`'s `spansWorld`
+branch — but it moves the same non-convergence to latitude, where a zoom-4
+view is 63° tall and escapes any sane band directly over the Gulf Stream. It
+also costs 1.0 GB a build against tiles' 1.35, and hands the reader **25 MB in
+one blocking fetch** against a tile viewport's 5.5 MB.
+
+| | published | HYCOM/build | worst single fetch | gaps |
+| --- | --- | --- | --- | --- |
+| regions | 7.8 MB | 0.32 GB | 4.9 MB | **yes** |
+| one 0.08° band ±45 | 24.8 MB | 1.01 GB | **24.8 MB** | in latitude |
+| **0.08° tiles ±45** | 33.1 MB | 1.35 GB | **5.5 MB** | **none** |
+
+So the tier costs ~4× the regions upstream and is the only one that answers
+the requirement. `tileLat`, reserved the previous evening against exactly this
+possibility, is what keeps it at 108 boxes instead of 162.
+
+The Pacific and Indian regions went with the change: added that morning to
+lift those basins off the globe, superseded the same day by a tier that does
+it everywhere, and 160 MB a build to keep as a fallback nothing would reach.
+
 ### Storage
 
 The tree is **≈219.7 MB, 21.5%** of the cap: 186.5 MB of tiles and 33.2 MB of

@@ -37,19 +37,25 @@ isotherm there, not that the heat is zero** — the question does not apply, and
 zero would drag the color ramp across every cold ocean. `DECISIONS.md` D2 has
 the rest of the published shape.
 
-**Its resolution is three tiers, finest where the storms are** (2026-08-31):
+**Its resolution is three tiers** (2026-08-31):
 
-| tier | resolution | size |
+| tier | resolution | what a reader fetches |
 | --- | --- | --- |
 | global overview | 0.96° | 326 KB |
-| **Atlantic & Gulf** | **0.08°** — the model's own | 3.4 MB |
-| Pacific | 0.16° | 2.9 MB |
-| Indian | 1.0 MB at 0.16° | 1.0 MB |
+| Atlantic & Gulf | 0.08° | 4.9 MB, only inside the box |
+| **tiles** | **0.08° everywhere D26 exists** | ~5.5 MB per viewport |
 
-A grid is an all-or-nothing download, which is why the global one stays
-coarse: a 0.16° global grid would be **11.9 MB** fetched the moment a reader
-switches the layer on. The regional files are fetched only when the viewport
-sits inside them.
+**The tiles are the tier that matters and the region is their fallback.** A
+region is used only when the *whole viewport* fits inside it, so every zoom
+and center that straddles two boxes falls back to the 0.96° globe — reported
+twice off the live map over the Gulf. Widening boxes does not converge: at the
+region minZoom of 4 a viewport is 127° wide.
+
+A tile mosaic is assembled per viewport and needs no containment in either
+axis, so it has **no resolution gap at any zoom or center**. It costs about
+**1.35 GB a build** off HYCOM, because a box is 25 levels rather than one and
+`build_tile` must fetch a box to learn whether it holds anything; `tileLat`
+bounds it to the 108 boxes that can hold a 26 °C isotherm.
 
 **`temp30-navy` is temperature at 30 m**, index 10 of the profile the heat
 content reads anyway — so it costs one grid and no extra request. Below the
