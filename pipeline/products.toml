@@ -1,0 +1,151 @@
+# What this repository publishes: the ESPC SCALAR fields, and nothing else.
+#
+# Sea surface temperature, salinity, height, and sea ice concentration and
+# thickness — all from the same US Navy ESPC-D-V02 run the currents come off,
+# and all cheap. The currents themselves are `espc-model-repo`, which is the
+# ESPC **currents** repository despite its name (a legacy exception, kept
+# because its URL is a live origin that a rename would 404).
+#
+# **Why the split, measured rather than chosen** (`espc-model-repo`'s
+# `DECISIONS.md` D2, 2026-08-30). The axis that costs bytes is vectors against
+# scalars: that repository's tile tier is 738.7 MB over ten sets — two leads
+# each for surface, 50 m and the three caps — which is 89% of its own bytes.
+# A 2-D scalar field is 44-58 MB. Putting these five roots into
+# `espc-model-repo` lands at 982 MB against a 1 GB Pages cap: 96%, about
+# 42 MB spare, which is less than one current frame. Split off from the
+# currents they sit at 150.3 MB, 14.7%, or 195.3 MB with the upper-ocean heat
+# content layer that is expected to join them.
+#
+# So the split does not merely fit. It is what UNBLOCKED these products, which
+# could not move anywhere while the only ESPC repository was already at 96%.
+#
+# **They arrive from `realtime-data-repo`, 2026-08-31**, which then has one
+# subject — observations — rather than observations plus one model's output.
+# That is the same argument that created `espc-model-repo` on 2026-08-22,
+# applied a second time; and the ice staying behind on that occasion was
+# explicitly a live test that moving one product between repositories is
+# cheap. This is that test being cashed.
+#
+# Two rules this file has to satisfy, both learned in the repository these
+# products came from:
+#
+# - **Every `roots` entry here must be one the site's `test-schema.mjs
+#   --roots` publishes.** The orchestrator exits 2 on a root declared here
+#   that the contract does not know, and stops the publish. It does *not*
+#   fail on the reverse — a contract root this repository has no product for
+#   is the ordinary case, because two other origins own most of them. The
+#   union across origins is held by `check:docs` on the site, which is the
+#   only side that can see every declaration at once.
+# - **A product that leaves takes its files with it.** The stage is seeded
+#   from the last publish, so a root a pipeline stops writing is carried
+#   forward for ever. That is the other half of this migration and it happens
+#   in `realtime-data-repo`, not here.
+#
+# **The ESPC hour rule spans three origins now and only the site can enforce
+# it.** Ten roots have to agree on the model run's anchor: the five here and
+# the five in `espc-model-repo`. The one arrangement that would let a single
+# pipeline check that — all ten in one repository — is exactly what the
+# storage cap forbids, so cross-origin enforcement is permanent rather than a
+# stage toward something tidier. It works because the anchor is a pure
+# function of time: the rule already agrees WITHOUT the origins coordinating,
+# and what splitting costs is the gate, not the agreement.
+
+# **The paths are relative to the site checkout, not to this workspace.** The
+# orchestrator runs both of these with the site checkout as their working
+# directory, so `site/scripts/...` would look right and resolve to nothing.
+[contract]
+check = ["node", "scripts/test-schema.mjs"]
+roots = ["node", "scripts/test-schema.mjs", "--roots"]
+
+# 30, which is what these products get in the repository they are moving from.
+# A shorter default would have changed a product's behavior as a side effect
+# of moving it, which is the one thing a move must not do — even though this
+# fetch is far shorter than the currents fetch the number was chosen for.
+[defaults]
+timeout_minutes = 30
+
+# --- steps ------------------------------------------------------------------
+# `lane` names the upstream a step leans on. Steps in different lanes run
+# concurrently; steps in the same lane queue. Two HYCOM reads competing for
+# the same THREDDS server help nobody, least of all HYCOM.
+#
+# One step, three products. The fetch is shared; the fates, namespaces, tiles
+# and holds are per product, which is the boundary that lets a clean
+# temperature publish while a broken ice read is held.
+[steps.fields]
+cmd = ["python3", "scripts/fetch-ocean-fields.py"]
+lane = "hycom"
+
+[products.fields-navy]
+title = "Navy ESPC temperature and salinity"
+step = "fields"
+roots = ["sst-navy.json", "sss-navy.json"]
+writes = ["sst-navy*.json", "sss-navy*.json"]
+# Two, not nine. These are ESPC 3-hourly products and the anchor
+# publishes frames that BRACKET the reader, so the nearest is at
+# most 1.5 h away by construction (see REFRESH_HOURS in
+# fetch-currents.py). Two leaves room for a late run without
+# hiding the nine-hour case this was blind to.
+max_age_hours = 2
+namespace = ["python3", "scripts/fetch-ocean-fields.py", "--namespace", "--only=sst-navy,sss-navy"]
+
+[products.fields-navy.tiles]
+build = ["python3", "scripts/fetch-ocean-fields.py", "--tiles", "--only=sst-navy,sss-navy"]
+key = ["python3", "scripts/fetch-ocean-fields.py", "--tile-key", "--only=sst-navy,sss-navy"]
+cache = "field-tiles"
+match = [
+  ["tiles-sst-navy", "sst-navy.json"],
+  ["tiles-sss-navy", "sss-navy.json"],
+]
+
+[products.ice-navy]
+title = "Navy ESPC sea ice concentration and thickness"
+step = "fields"
+roots = ["sic-navy.json", "sit-navy.json"]
+writes = ["sic-navy*.json", "sit-navy*.json"]
+# Two, not nine. These are ESPC 3-hourly products and the anchor
+# publishes frames that BRACKET the reader, so the nearest is at
+# most 1.5 h away by construction (see REFRESH_HOURS in
+# fetch-currents.py). Two leaves room for a late run without
+# hiding the nine-hour case this was blind to.
+max_age_hours = 2
+namespace = ["python3", "scripts/fetch-ocean-fields.py", "--namespace", "--only=sic-navy,sit-navy"]
+
+# **Its own cache, and it has to be.** `plan` writes one
+# `cache-key-<cache>` per product, so two products sharing a name would
+# write that output twice and the workflow would read whichever came last —
+# a key describing half of what the cache holds, which is the
+# incomplete-artifact-under-a-complete-key fault that cannot heal by
+# itself. A new cache name needs a **Restore** and a **Save** step in the
+# workflow; `plan` says so out loud when one has neither, because a cache
+# nothing restores is invisible — the tiles are simply rebuilt every run.
+[products.ice-navy.tiles]
+build = ["python3", "scripts/fetch-ocean-fields.py", "--tiles", "--only=sic-navy,sit-navy"]
+key = ["python3", "scripts/fetch-ocean-fields.py", "--tile-key", "--only=sic-navy,sit-navy"]
+cache = "ice-tiles"
+match = [
+  ["tiles-sic-navy", "sic-navy.json"],
+  ["tiles-sit-navy", "sit-navy.json"],
+]
+
+# **Sea surface height, its own product because it is its own
+# aggregation.** `surf_el` comes off `FMRC_ESPC-D-V02_ssh` while the
+# temperature and salinity come off `ts3z`, so it can fail on its own and
+# should be held on its own — which is what a product is for. It shares the
+# `fields` step, the same arrangement the other two here have.
+#
+# No tile tier: a free surface is a smooth field, and the region stride at
+# 0.16 deg already resolves the mesoscale eddies a reader looks for. See the
+# note on the product in `fetch-ocean-fields.py`.
+[products.ssh-navy]
+title = "Navy ESPC sea surface height"
+step = "fields"
+roots = ["ssh-navy.json"]
+writes = ["ssh-navy*.json"]
+# Two, not nine. These are ESPC 3-hourly products and the anchor
+# publishes frames that BRACKET the reader, so the nearest is at
+# most 1.5 h away by construction (see REFRESH_HOURS in
+# fetch-currents.py). Two leaves room for a late run without
+# hiding the nine-hour case this was blind to.
+max_age_hours = 2
+namespace = ["python3", "scripts/fetch-ocean-fields.py", "--namespace", "--only=ssh-navy"]
