@@ -64,6 +64,38 @@ hole** rather than a silent underestimate, which is the whole design. The
 depth only tunes how often it fires. If the count climbs into the tens, 400 m
 is two levels away.
 
+### 2026-08-31, later: 0.08° where the storms are
+
+The owner's call after the cost was priced. Atlantic & Gulf at the model's own
+0.08°, Pacific and Indian at 0.16°, the 0.96° global kept as the overview.
+Measured on the first run, against what was predicted before building it:
+
+| grid | predicted | published |
+| --- | --- | --- |
+| Atlantic 0.08° | 3.47 MB | **3.39 MB** (1126×626) |
+| Pacific 0.16° | 2.94 MB | **2.92 MB** (1188×501) |
+| Indian 0.16° | 1.04 MB | **1.02 MB** (563×376) |
+
+**The refused option is the instructive one.** A literal 0.16° *global* grid
+would be 11.9 MB in one file the reader downloads the moment the layer is
+switched on, against 326 KB today, and 481 MB a build of which three quarters
+is water with no 26 °C isotherm. **A grid is an all-or-nothing download** —
+which is exactly what makes a coarse global one the right overview and a fine
+one the wrong everything, and it is why this went to regions rather than to a
+finer global stride.
+
+**`tileLat` (±45°) is declared and inert**, reserving the option to go finer
+still. `build_tile` cannot know a box is empty without fetching it, so an
+unbounded 0.08° tier here would read all 162 boxes at 25 levels to discover
+105 hold no isotherm: 1.94 GB a build to publish 0.7 GB worth. Bounded, 108
+boxes. Turning tiles on is one word now rather than a bandwidth surprise.
+
+**A finer grid finds more truncated columns, which is the expected direction.**
+The run reported 1 on the global grid and 9 on the Atlantic at 0.08° — of
+339,415 wet cells there — because a coarse cell averages away the deepest warm
+cores that a fine one resolves. Still absent-and-reported rather than
+understated.
+
 ### Storage
 
 The tree is **≈219.7 MB, 21.5%** of the cap: 186.5 MB of tiles and 33.2 MB of

@@ -37,6 +37,20 @@ isotherm there, not that the heat is zero** — the question does not apply, and
 zero would drag the color ramp across every cold ocean. `DECISIONS.md` D2 has
 the rest of the published shape.
 
+**Its resolution is three tiers, finest where the storms are** (2026-08-31):
+
+| tier | resolution | size |
+| --- | --- | --- |
+| global overview | 0.96° | 326 KB |
+| **Atlantic & Gulf** | **0.08°** — the model's own | 3.4 MB |
+| Pacific | 0.16° | 2.9 MB |
+| Indian | 1.0 MB at 0.16° | 1.0 MB |
+
+A grid is an all-or-nothing download, which is why the global one stays
+coarse: a 0.16° global grid would be **11.9 MB** fetched the moment a reader
+switches the layer on. The regional files are fetched only when the viewport
+sits inside them.
+
 **`temp30-navy` is temperature at 30 m**, index 10 of the profile the heat
 content reads anyway — so it costs one grid and no extra request. Below the
 diurnal skin and most of the wind-mixed layer, still inside the water a storm
