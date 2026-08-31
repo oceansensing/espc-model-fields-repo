@@ -51,15 +51,15 @@ on:
   # and the probe-first exit means a run with nothing new to fetch reads a
   # handful of OPeNDAP metadata requests and stops.
   #
-  # **Commented out until the first run is verified, 2026-08-31.** This
-  # repository cannot check out the private site repository until
-  # `PIPELINES_SSH_KEY` exists here, and a cron firing before then would spin
-  # three runners an hour to fail at the same step. `espc-model-repo` landed
-  # the same way and for the same reason. Dispatch manually, read the run,
-  # then uncomment — in the commit that records what the first run measured.
-  # schedule:
-  #   - cron: '17,37,57 * * * *'
-  #   - cron: '22 0,3,6,9,12,15,18,21 * * *'
+  # **On since 2026-08-31**, after two dispatched runs: the first refused by
+  # the write fence for an unscoped step, the second green in 3 min 36 s with
+  # all four tile tiers built cold and every product fresh. They were held off
+  # until then because this repository cannot read the private site repository
+  # without `PIPELINES_SSH_KEY`, and a cron firing before that would have spun
+  # three runners an hour to fail at the same step.
+  schedule:
+    - cron: '17,37,57 * * * *'
+    - cron: '22 0,3,6,9,12,15,18,21 * * *'
 
 # Nothing at workflow level: each job says what it holds, and the job that
 # runs `pip install` and the fetchers holds nothing worth stealing.

@@ -111,37 +111,85 @@ fact from a guess that aged.
 
 ### In this repository
 
-- **`PLAN.md`** — the founding plan and running record.
+- **`README.md`** — what this publishes, the measured storage, how to run it.
+- **`PLAN.md`** — the running record: what happened here, measured, and what
+  is open.
 - **`DECISIONS.md`** — dated one-way decisions, D1 onward.
-- **`pipeline/products.toml`** — not written yet.
+- **`pipeline/products.toml`** — the declaration, and the only thing here that
+  the pipeline reads.
 
 ## What must not be got wrong here
 
-### These products are still somewhere else
+### The step's scope and the products' scope are ONE change
 
-**The five roots this repository is for are published by `realtime-data-repo`
-today and have not moved.** Until they do, they are that repository's
-responsibility — do not treat them as this one's because a plan says they are
-coming. That is how a product ends up owned by nobody.
+**`fetch-ocean-fields.py` publishes four families and this repository owns
+three.** The `fields` step therefore carries
+`--only=sst-navy,sss-navy,sic-navy,sit-navy,ssh-navy`, and it has to.
 
-**When the move happens: a product that leaves takes its files with it.** The
-stage is seeded from what is already published, so a withdrawn product lingers
-in the old origin unless it is deliberately removed. That has bitten before.
+Invoked bare it fetches OISST too, writes three files no product here
+declares, and the write fence refuses the run — which is what happened on the
+first dispatch, 2026-08-31. **A product is the unit of OWNERSHIP; a step is
+the unit of EXECUTION.** Adding or removing a product here means asking
+whether the step's `--only` still matches, in the same commit.
+
+The site's `check:docs` holds this now, in both directions and across every
+origin. Too WIDE is loud (the fence stops the run); too NARROW is silent — the
+files are simply never written and the previous copies carry forward frozen
+for ever, which is the shape three other entries in this project are about.
+
+### The ESPC hour rule is cross-origin and permanent
+
+One model run publishes one hour, and its members span **three** repositories
+now: the currents in `espc-model-repo`, these five here, and nothing in
+`realtime-data-repo` since 2026-08-31. No repository can enforce that alone.
+Only the site can, reading every origin's manifest.
+
+It works because the anchor is a pure function of time — the origins agree
+*without coordinating*, and what splitting cost was the gate, not the
+agreement. The arrangement that would let one pipeline check it is all ten
+roots in one repository, which is exactly what storage forbids. Permanent, not
+transitional.
 
 ### Two rules inherited from the sibling data repositories
 
 - **Every `roots` entry in `products.toml` must be one the site's
   `test-schema.mjs --roots` publishes**, or the orchestrator exits 2 and stops
-  the publish.
-- **A product that leaves takes its files with it.**
+  the publish. It does *not* fail on the reverse: a contract root this
+  repository has no product for belongs to another origin.
+- **A product that leaves takes its files with it.** The stage is seeded from
+  the last publish, so a root a pipeline stops writing is carried forward for
+  ever and served frozen. That is `realtime-data-repo`'s side of this
+  migration and it cost 21 files there.
 
-### The ESPC hour rule is cross-origin and permanent
+### Reading a run
 
-The contract requires one model run to publish one hour across every ESPC
-member, and those members span more than one repository — so no repository can
-enforce it alone. Only the site, reading all origins, can. The arrangement
-that would fix it (one repository for all of them) is exactly what storage
-forbids.
+`status/status.json` is the health record and the routing document both: each
+product carries its fate, its reason if held, and the `roots` this origin
+serves, which is what the map routes on.
+
+**`checked` and `updated` are different questions.** `checked` is the last
+time the pipeline successfully attempted the product; `updated` is the last
+time its bytes changed. One product's frozen `checked` beside a current
+`generated` is the ordinary signature of a hold, not of a stopped pipeline.
+`generated` at the top of the document is the run that actually ran, and it is
+the field to read first.
+
+**When the tree is frozen, the run log is the only current account of why** —
+`status.json` is published *with* the tree, so a `deploy=False` leaves readers
+fetching the last run that succeeded.
+
+### The checkout that everything depends on
+
+This repository reads the **private** site repository for its fetchers, and a
+read-only deploy key is the only reason it can — `PIPELINES_SSH_KEY` here,
+public half `espc-model-fields-repo-checkout` on the site repository. Its own
+key, not the one another repository uses, so revoking or rotating one does not
+take the other down.
+
+**The hazard is the ordering, and it has been measured once already**: the
+secret *arms* the SSH path the moment it exists, because a non-empty `ssh-key`
+sends `actions/checkout` down SSH and the HTTPS fallback is never consulted.
+Key on the site repository first, secret here second.
 
 ## The working agreement
 

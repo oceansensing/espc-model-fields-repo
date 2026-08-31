@@ -1,50 +1,118 @@
 # espc-model-fields-repo
 
-The ESPC **scalar** fields — the cheap half of the model. A sibling data repository: its own Pages site, its own cron,
-its own gigabyte, holding no code of its own.
+The ESPC **scalar** fields — the cheap half of one model — published for the
+[C4PO ocean map](https://oceansensing.org/visualization/) at
+<https://oceansensing.org/espc-model-fields-repo/>. A sibling data repository:
+its own Pages site, its own cron, its own gigabyte, holding no code of its own.
 
-**Nothing is built.** `PLAN.md` is the founding plan; `CLAUDE.md` carries what
-must not be got wrong and the shared doc doctrine.
+**Live since 2026-08-31**, when the five roots moved here from
+`realtime-data-repo`. The currents come off the same US Navy ESPC-D-V02 run
+and are published by `espc-model-repo` — which is the ESPC **currents**
+repository despite its name, a legacy exception kept because its URL is a live
+origin that a rename would 404.
 
-## What it will publish
+`CLAUDE.md` is the operator's and maintainer's half — what to run, what must
+move together, what has already gone wrong. `PLAN.md` is the running record.
+`DECISIONS.md` indexes the dated one-way decisions. Which document gets what,
+across all eight repositories of this project, is the doctrine block at the
+top of `CLAUDE.md`.
 
-SST, SSS, SSH, sea-ice concentration and thickness, and eventually an
-upper-ocean heat content layer. **Five roots today**: `sst-navy.json`,
-`sss-navy.json`, `ssh-navy.json`, `sic-navy.json`, `sit-navy.json`.
+## What it publishes
 
-**They are still in `realtime-data-repo` and have not moved.** This
-repository exists so the move has a destination; the migration is a separate
-sitting and nothing here is wired yet.
+Three products, five roots, all from one HYCOM read per family:
 
-## Storage
+| product | roots | tiles |
+| --- | --- | --- |
+| `fields-navy` | `sst-navy.json`, `sss-navy.json` | `tiles-sst-navy`, `tiles-sss-navy` |
+| `ice-navy` | `sic-navy.json`, `sit-navy.json` | `tiles-sic-navy`, `tiles-sit-navy` |
+| `ssh-navy` | `ssh-navy.json` | none, by design |
 
-150.3 MB for the five (**14.7%** of the 1 GB Pages cap), or 195.3 MB
-(19.1%) once a heat-content layer joins them — computed 2026-08-30 from
-`espc-model-repo`'s own byte log. They could not move into that repository
-because currents plus scalars is 982 MB, **96%**, less than one current frame
-of margin. That is the whole reason this repository exists.
+Each root also publishes its regional cuts at 0.16° — Atlantic, Arctic,
+Antarctic — resolved relative to the file that names them, so a product
+carries its location with it.
 
-## Why it is separate from `espc-model-repo` — which is the ESPC **currents** repository despite its name
+**`ssh-navy` has no tile tier and that absence is deliberate**: a free surface
+is a smooth field, and the region stride already resolves the mesoscale eddies
+a reader looks for.
 
-**Every model splits two ways along the axis that costs bytes** (decided
-2026-08-30): a currents repository for the tiled vector fields, which are
-expensive, and a fields repository for the scalars, which are cheap. ESPC's
-tile tier is 89% of its repository's bytes — two forecast leads across five
-depths — against 44-58 MB for a 2-D scalar field. Splitting gives each half
-its own gigabyte.
+## Storage, measured on the first run
 
-## How it will run
+| | |
+| --- | --- |
+| tile tiers | **143.0 MB** — sst 43.9, sss 45.1, sic 38.7, sit 15.3 |
+| grids and status (the `published` branch) | **26.5 MB** over 25 files |
+| **total tree** | **≈169.5 MB, 16.6%** of the 1 GB Pages cap |
 
-The orchestrator comes from `realtime-data-repo`, the fetchers and the
-published-file contract from `oceansensing.github.io`, both checked out at run
-time. This repository will carry `pipeline/products.toml` and nothing else
-executable. There are no commands to give yet.
+Measured 2026-08-31 from the first green run's own log and the branch's
+object sizes. **The 2026-08-30 projection was 150.3 MB and it was optimistic
+by about 13%** — the per-product tile figures it was built from were close
+(sst 44.0 projected against 43.9 measured, sss 45.1 against 45.1) and what it
+under-counted was the regional grids, which are several MB each and are not in
+a tile tier at all.
+
+There is room for the planned upper-ocean heat content layer and a great deal
+besides. **The reason this repository exists is that there was not**: the five
+roots plus the currents in one repository is 982 MB, 96% of the cap, less than
+one current frame of margin.
+
+## How it runs
+
+**No code here.** The orchestrator (`pipeline/orchestrate.py`) is checked out
+from `realtime-data-repo`; the fetchers and the published-file contract
+(`schema.ts`) from `oceansensing.github.io`. `PIPELINE_ROOT` points the
+orchestrator at this workspace, so it assembles and publishes this
+repository's tree from this repository's declaration. A change to a fetcher or
+to the contract lands here on the **next run**, not on any push here.
+
+This repository carries `pipeline/products.toml` — what it publishes — and
+nothing else executable.
+
+- **Dispatch a run**: Actions → the publish workflow → Run workflow. One kind
+  of run; it fetches whatever the anchor has moved past.
+- **Read the health**: `curl -s https://oceansensing.org/espc-model-fields-repo/status/status.json | python3 -m json.tool`
+- **Scheduled**: `17,37,57 * * * *`, offset from `realtime-data-repo`'s
+  `3,23,43` and `espc-model-repo`'s `7,27,47` so no two of the three read
+  HYCOM in the same minute, plus `22 0,3,6,9,12,15,18,21` — a dedicated
+  attempt just after each three-hourly anchor rollover, which is the only
+  moment there is genuinely new work.
+
+A cold run with every tile tier to build measured **3 min 36 s** end to end
+(2026-08-31). A run with nothing new to fetch exits after a handful of OPeNDAP
+metadata requests.
+
+## What publishes where
+
+```
+oceansensing.org/espc-model-fields-repo/
+  map/          the grids, their regional cuts and the four tile tiers
+  status/
+    status.json one object per product: fate, reason, checked, updated, hour,
+                and the roots this origin serves — which is what the map
+                routes on
+    plan.json   what this run intended before it started
+    receipt.json  what it actually did
+```
+
+The `map/` layout is the contract defined by `schema.ts` in the site
+repository, and the site's own `test-schema.mjs` runs over the assembled tree
+before anything deploys. The contract is the consumer's, deliberately.
 
 ## Structure
 
 ```
-PLAN.md         the founding plan and running record
-CLAUDE.md       what must not be got wrong, and the shared doc doctrine
-DECISIONS.md    dated one-way decisions, D1 onward
-pipeline/       products.toml — not written yet
+PLAN.md               the running record: what happened, measured, what is open
+CLAUDE.md             what must not be got wrong, and the shared doc doctrine
+DECISIONS.md          dated one-way decisions, D1 onward
+index.html            the one hand-written page; Pages serves it at the root
+pipeline/
+  products.toml       what this repository publishes, and nothing executable
+.github/workflows/
+  publish.yml         thin YAML around an orchestrator that lives elsewhere
 ```
+
+## License
+
+The code here is the owner's; the scientific data belongs to the body that
+produced it. The fields are **US Navy ESPC-D-V02**, served through HYCOM, and
+credited on the map itself. The repository is public so the data can be served
+from GitHub Pages; that is not a grant of any license.
