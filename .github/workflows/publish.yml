@@ -217,6 +217,16 @@ jobs:
           path: ${{ steps.plan.outputs.cache-paths-ice-tiles }}
           key: ${{ steps.plan.outputs.cache-key-ice-tiles }}
 
+      # Added 2026-08-31 with the 30 m temperature. `plan` names any declared
+      # cache with neither step, which is the only tell there would be — a
+      # cache nothing restores is not an error, it is a tier rebuilt from
+      # scratch every run with correct output.
+      - name: Restore 30 m temperature tiles
+        uses: actions/cache/restore@0057852bfaa89a56745cba8c7296529d2fc39830 # v4
+        with:
+          path: ${{ steps.plan.outputs.cache-paths-temp30-tiles }}
+          key: ${{ steps.plan.outputs.cache-key-temp30-tiles }}
+
       - name: Fetch, validate, assemble
         id: run
         env:
@@ -236,6 +246,13 @@ jobs:
         with:
           path: ${{ steps.plan.outputs.cache-paths-ice-tiles }}
           key: ${{ steps.plan.outputs.cache-key-ice-tiles }}
+
+      - name: Save 30 m temperature tiles
+        if: steps.run.outputs.built-temp30-tiles == 'true'
+        uses: actions/cache/save@0057852bfaa89a56745cba8c7296529d2fc39830 # v4
+        with:
+          path: ${{ steps.plan.outputs.cache-paths-temp30-tiles }}
+          key: ${{ steps.plan.outputs.cache-key-temp30-tiles }}
 
       - name: Upload the site
         if: steps.run.outputs.deploy == 'true'

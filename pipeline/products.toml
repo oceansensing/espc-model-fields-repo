@@ -89,7 +89,7 @@ timeout_minutes = 30
 # repository these products came from it had no reason to be scoped: every
 # family the script wrote had an owner there.
 [steps.fields]
-cmd = ["python3", "scripts/fetch-ocean-fields.py", "--only=sst-navy,sss-navy,sic-navy,sit-navy,ssh-navy"]
+cmd = ["python3", "scripts/fetch-ocean-fields.py", "--only=sst-navy,sss-navy,sic-navy,sit-navy,ssh-navy,temp30-navy,ohc-navy"]
 lane = "hycom"
 
 [products.fields-navy]
@@ -165,3 +165,52 @@ writes = ["ssh-navy*.json"]
 # hiding the nine-hour case this was blind to.
 max_age_hours = 2
 namespace = ["python3", "scripts/fetch-ocean-fields.py", "--namespace", "--only=ssh-navy"]
+
+# **Temperature at 30 m, its own product because it is its own read.** Fates
+# follow upstream reads — the rule that split the currents into three — and
+# this is a separate level request from the surface temperature, so a failure
+# in one should not hold the other.
+#
+# It shares a tile tier's argument with the surface temperature: the same
+# 1/12 deg grid, and the region stride would render it no finer than a
+# quarter-degree analysis.
+[products.temp30-navy]
+title = "Navy ESPC temperature at 30 m"
+step = "fields"
+roots = ["temp30-navy.json"]
+writes = ["temp30-navy*.json"]
+max_age_hours = 2
+namespace = ["python3", "scripts/fetch-ocean-fields.py", "--namespace", "--only=temp30-navy"]
+
+# Its own cache name, for the reason `ice-navy.tiles` states: `plan` writes
+# one `cache-key-<cache>` per product, so two products sharing a name would
+# write that output twice and the workflow would read whichever came last.
+# **A new cache name needs a Restore and a Save step in the workflow**, and
+# `plan` says so out loud when a declared cache has neither.
+[products.temp30-navy.tiles]
+build = ["python3", "scripts/fetch-ocean-fields.py", "--tiles", "--only=temp30-navy"]
+key = ["python3", "scripts/fetch-ocean-fields.py", "--tile-key", "--only=temp30-navy"]
+cache = "temp30-tiles"
+match = [
+  ["tiles-temp30-navy", "temp30-navy.json"],
+]
+
+# **Ocean heat content — tropical cyclone heat potential.** The integral of
+# (T - 26 C) from the 26 C isotherm to the surface, from a 0-300 m profile
+# read. The arithmetic, the measured D26 distribution that chose 300 m, and
+# what each of its three answers means are in `fetch-ocean-fields.py`.
+#
+# **No tile tier**, on sea surface height's argument rather than the
+# temperature's: what a reader zooms into here is mesoscale, and the 0.16 deg
+# region stride already resolves warm eddies and rings.
+#
+# Its own product for the same reason as the layer above: its read is its own,
+# and it is the costliest of them — 25 levels against one — so it is the most
+# likely of the five to fail alone.
+[products.ohc-navy]
+title = "Navy ESPC ocean heat content"
+step = "fields"
+roots = ["ohc-navy.json"]
+writes = ["ohc-navy*.json"]
+max_age_hours = 2
+namespace = ["python3", "scripts/fetch-ocean-fields.py", "--namespace", "--only=ohc-navy"]
