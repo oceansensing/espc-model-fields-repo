@@ -262,10 +262,29 @@ A cold run with all four tile tiers to build: **3 min 36 s** end to end.
 1. ~~The upper-ocean heat content layer.~~ **Built 2026-08-31**, on ESPC:
    ECCOFS stops short of the main development region, so a storm's heat
    potential along most of its track would be missing. See above.
-2. **`ssh-navy` publishes no forecast frames**, as none of these products do
+2. **`ssh-navy` has the resolution gap heat content just had, and nothing has
+   been done about it.** It is the other product here with no tile tier, so a
+   region is its only finer tier — and a region is used only when the whole
+   viewport fits inside it. Every zoom and center that straddles the Atlantic
+   box therefore draws sea surface height at 0.96° instead of 0.16°, and has
+   since the day it shipped. It was found while diagnosing the same fault in
+   `ohc-navy` on 2026-08-31 and deliberately not fixed in that sitting.
+
+   **It is much cheaper to fix than heat content was**: `surf_el` is one
+   level, not 25, so a tile tier over the same 108 boxes is about **79 MB a
+   build** rather than 1.35 GB — and it needs no cadence change, no contract
+   teaching and no budget move, because a one-level tier can rebuild on the
+   shared 3-hourly hour without anybody noticing. Roughly: add
+   `'tile': (1, 2)`, `tiles: True`, a `tileLat` if wanted, a cache name, and
+   the workflow's Restore/Save pair.
+
+   Not done because nobody has reported it and it is not this session's ask.
+   Recorded because the diagnosis is already paid for.
+
+3. **`ssh-navy` publishes no forecast frames**, as none of these products do
    today: one hour per run, the one nearest the reader. Whether the scalars
    should bracket the reader the way the currents do has never been asked.
-3. **Nothing here gates prose.** There is no `package.json` and no npm; CI is
+4. **Nothing here gates prose.** There is no `package.json` and no npm; CI is
    a publish run. The mechanism for this repository's documents is the doc
    doctrine's question 6, and the only automated help is the site's
    `check:docs`, which reads this repository's `products.toml` and its
