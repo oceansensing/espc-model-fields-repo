@@ -144,6 +144,25 @@ the ocean is most favorable. **N is normally 0 or 1.** If it climbs into the
 tens, the read wants deepening to 400 m, which is two levels; if it jumps by
 orders, suspect the upstream rather than the depth.
 
+### A geometry change does not refetch anything
+
+**The probe-first exit asks whether the MODEL has a newer step, not whether
+this repository changed.** So widening a region box, moving a stride, or
+altering how a value is derived leaves the published grids exactly as they
+were: carried forward from the last publish, at the old dimensions, with
+every product reporting `fresh`.
+
+Measured 2026-08-31, when the Atlantic box went from 90° wide to 115° and the
+next run finished in 35 seconds having published the old grid.
+
+**The fix is one dispatch with `--force`**, added to the step's `cmd`,
+dispatched, and taken straight back out — it skips the probe and refetches
+everything. Do not leave it in: every run would then refetch whether or not
+there is anything new, which is the cost the probe exists to avoid.
+
+Waiting for the next anchor rollover works too, and costs nothing. Three
+hours, on this model.
+
 ### The step's scope and the products' scope are ONE change
 
 **`fetch-ocean-fields.py` publishes six families (2026-08-31) and this
