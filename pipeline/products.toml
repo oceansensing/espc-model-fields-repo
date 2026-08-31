@@ -72,8 +72,24 @@ timeout_minutes = 30
 # One step, three products. The fetch is shared; the fates, namespaces, tiles
 # and holds are per product, which is the boundary that lets a clean
 # temperature publish while a broken ice read is held.
+#
+# **`--only` on the STEP, and the first run here is what taught it.** The
+# script publishes four families — the three Navy ones this repository owns
+# and OISST, which stayed in `realtime-data-repo`. Invoked bare it fetches all
+# four, so the first run wrote `sst-oisst.json`, `sic-oisst.json` and
+# `ssta-oisst.json` into a tree where no product declares them, and the write
+# fence refused the run outright: `FENCE  sst-oisst.json: written by no
+# declared namespace`. Correct, and loud, and exactly what that fence is for.
+#
+# **The lesson generalizes past this repository.** A product is the unit of
+# ownership and a STEP is the unit of execution, and splitting one script's
+# families across repositories splits the first without splitting the second.
+# The per-product `namespace`, `tiles` and `tile-key` commands were already
+# scoped — it is the step's own `cmd` that is easy to miss, because in the
+# repository these products came from it had no reason to be scoped: every
+# family the script wrote had an owner there.
 [steps.fields]
-cmd = ["python3", "scripts/fetch-ocean-fields.py"]
+cmd = ["python3", "scripts/fetch-ocean-fields.py", "--only=sst-navy,sss-navy,sic-navy,sit-navy,ssh-navy"]
 lane = "hycom"
 
 [products.fields-navy]
