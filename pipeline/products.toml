@@ -74,8 +74,8 @@ timeout_minutes = 30
 # temperature publish while a broken ice read is held.
 #
 # **`--only` on the STEP, and the first run here is what taught it.** The
-# script publishes four families — the three Navy ones this repository owns
-# and OISST, which stayed in `realtime-data-repo`. Invoked bare it fetches all
+# script publishes six families as of 2026-08-31 — the five this repository
+# owns and OISST, which stayed in `realtime-data-repo`. Invoked bare it fetches all
 # four, so the first run wrote `sst-oisst.json`, `sic-oisst.json` and
 # `ssta-oisst.json` into a tree where no product declares them, and the write
 # fence refused the run outright: `FENCE  sst-oisst.json: written by no

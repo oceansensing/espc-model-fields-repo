@@ -146,8 +146,8 @@ orders, suspect the upstream rather than the depth.
 
 ### The step's scope and the products' scope are ONE change
 
-**`fetch-ocean-fields.py` publishes four families and this repository owns
-three.** The `fields` step therefore carries
+**`fetch-ocean-fields.py` publishes six families (2026-08-31) and this
+repository owns five.** The `fields` step therefore carries
 `--only=sst-navy,sss-navy,sic-navy,sit-navy,ssh-navy`, and it has to.
 
 Invoked bare it fetches OISST too, writes three files no product here
