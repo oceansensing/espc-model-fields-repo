@@ -89,7 +89,7 @@ timeout_minutes = 30
 # repository these products came from it had no reason to be scoped: every
 # family the script wrote had an owner there.
 [steps.fields]
-cmd = ["python3", "scripts/fetch-ocean-fields.py", "--only=sst-navy,sss-navy,sic-navy,sit-navy,ssh-navy,temp30-navy,ohc-navy"]
+cmd = ["python3", "scripts/fetch-ocean-fields.py", "--force", "--only=sst-navy,sss-navy,sic-navy,sit-navy,ssh-navy,temp30-navy,ohc-navy"]
 lane = "hycom"
 
 [products.fields-navy]
