@@ -19,13 +19,28 @@ top of `CLAUDE.md`.
 
 ## What it publishes
 
-Three products, five roots, all from one HYCOM read per family:
+Five products, seven roots, one HYCOM read per product — which is why they
+are five products and not one: **fates follow upstream reads.**
 
 | product | roots | tiles |
 | --- | --- | --- |
 | `fields-navy` | `sst-navy.json`, `sss-navy.json` | `tiles-sst-navy`, `tiles-sss-navy` |
 | `ice-navy` | `sic-navy.json`, `sit-navy.json` | `tiles-sic-navy`, `tiles-sit-navy` |
 | `ssh-navy` | `ssh-navy.json` | none, by design |
+| `temp30-navy` | `temp30-navy.json` | `tiles-temp30-navy` |
+| `ohc-navy` | `ohc-navy.json` | none, by design |
+
+**`ohc-navy` is ocean heat content — tropical cyclone heat potential**, in
+kJ/cm²: ρ·c_p times the integral of (T − 26 °C) from the 26 °C isotherm to the
+surface, off a 0–300 m profile read. **An absent cell means there is no 26 °C
+isotherm there, not that the heat is zero** — the question does not apply, and
+zero would drag the color ramp across every cold ocean. `DECISIONS.md` D2 has
+the rest of the published shape.
+
+**`temp30-navy` is temperature at 30 m**, index 10 of the profile the heat
+content reads anyway — so it costs one grid and no extra request. Below the
+diurnal skin and most of the wind-mixed layer, still inside the water a storm
+overturns.
 
 Each root also publishes its regional cuts at 0.16° — Atlantic, Arctic,
 Antarctic — resolved relative to the file that names them, so a product
@@ -39,13 +54,16 @@ a reader looks for.
 
 | | |
 | --- | --- |
-| tile tiers | **143.0 MB** — sst 43.9, sss 45.1, sic 38.7, sit 15.3 |
-| grids and status (the `published` branch) | **26.5 MB** over 25 files |
-| **total tree** | **≈169.5 MB, 16.6%** of the 1 GB Pages cap |
+| tile tiers | **186.5 MB** — sst 43.9, sss 45.1, sic 38.7, temp30 43.5, sit 15.3 |
+| grids and status (the `published` branch) | **33.2 MB** over 33 files |
+| **total tree** | **≈219.7 MB, 21.5%** of the 1 GB Pages cap |
 
-Measured 2026-08-31 from the first green run's own log and the branch's
-object sizes. **The 2026-08-30 projection was 150.3 MB and it was optimistic
-by about 13%** — the per-product tile figures it was built from were close
+Measured 2026-08-31 after the heat content and the 30 m temperature landed;
+the five-product tree before them was ≈169.5 MB.
+
+From the runs' own logs and the branch's object sizes. **The 2026-08-30
+projection was 150.3 MB for the original five roots and it was optimistic by
+about 13%** — the per-product tile figures it was built from were close
 (sst 44.0 projected against 43.9 measured, sss 45.1 against 45.1) and what it
 under-counted was the regional grids, which are several MB each and are not in
 a tile tier at all.
@@ -76,8 +94,9 @@ nothing else executable.
   attempt just after each three-hourly anchor rollover, which is the only
   moment there is genuinely new work.
 
-A cold run with every tile tier to build measured **3 min 36 s** end to end
-(2026-08-31). A run with nothing new to fetch exits after a handful of OPeNDAP
+A cold run with every tile tier to build measured **3 min 36 s** end to end,
+and the run that added the heat content and its 30 m by-product — a 25-level
+profile read plus a new tile tier — took **3 min 16 s** (2026-08-31). A run with nothing new to fetch exits after a handful of OPeNDAP
 metadata requests.
 
 ## What publishes where

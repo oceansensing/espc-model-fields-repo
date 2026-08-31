@@ -120,6 +120,30 @@ fact from a guess that aged.
 
 ## What must not be got wrong here
 
+### Heat content publishes ABSENT, never zero
+
+`ohc-navy` is tropical cyclone heat potential, and a cell with no value means
+**there is no 26 °C isotherm in that column** — the question does not apply.
+It does not mean the heat is zero.
+
+Anything that fills those nulls with 0 — a reader, a port, a "tidy up the
+grid" change here — paints every cold ocean at the bottom of the ramp and
+destroys the range where the field is actually read. `DECISIONS.md` D2 fixes
+this as part of the published shape.
+
+**A second null means something different again**: a column still warmer than
+26 °C at the bottom of the 300 m read. That one is *counted and printed* by
+the fetcher —
+
+```
+! ohc-navy: N column(s) never reached 26 C above 300 m
+```
+
+— because publishing the partial integral would understate heat exactly where
+the ocean is most favorable. **N is normally 0 or 1.** If it climbs into the
+tens, the read wants deepening to 400 m, which is two levels; if it jumps by
+orders, suspect the upstream rather than the depth.
+
 ### The step's scope and the products' scope are ONE change
 
 **`fetch-ocean-fields.py` publishes four families and this repository owns

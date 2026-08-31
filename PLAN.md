@@ -9,12 +9,80 @@ storage measurements that made this repository necessary.
 
 Publishes to <https://oceansensing.org/espc-model-fields-repo/> on its own
 cron: `17,37,57 * * * *` plus `22 0,3,6,9,12,15,18,21` following the
-three-hourly anchor. Three products — `fields-navy`, `ice-navy`, `ssh-navy` —
-five roots, four tile tiers.
+three-hourly anchor. **Five products, seven roots, five tile tiers** —
+`fields-navy`, `ice-navy`, `ssh-navy`, `temp30-navy` and `ohc-navy`.
 
 It holds no code. The orchestrator comes from `realtime-data-repo` and the
 fetchers and contract from `oceansensing.github.io`, both checked out at run
 time, with `PIPELINE_ROOT` pointing the orchestrator at this workspace.
+
+## 2026-08-31: ocean heat content, and a 30 m temperature that came free
+
+Two products, seven roots. Both off `water_temp` on `ts3z`, both asked for by
+the owner in one breath: a heat content layer for hurricane intensity, and —
+since a 3-D read was needed either way — a temperature at 30 m alongside it.
+
+**The quantity is tropical cyclone heat potential**, integrated to the 26 °C
+isotherm rather than to a fixed depth. The design, the measurement that chose
+a 300 m read, and the three answers the reduction gives are in the site's
+`PLAN.md` and in `DECISIONS.md` D2; what follows is what this repository
+measured.
+
+### The first run, and the case that fired on it
+
+| | |
+| --- | --- |
+| `ohc-navy.json` | 326 KB, **11,819** cells with a D26, max **224.3 kJ/cm²** |
+| `ohc-navy-atlantic.json` | 851 KB, 83,473 cells |
+| `temp30-navy.json` | 317 KB, 45,719 cells |
+| `temp30-navy` tiles | 158 tiles (4 all land), **43.5 MB** |
+| run | **3 min 16 s** including the new tier cold |
+
+**224.3 kJ/cm² is the number to sanity-check, and it checks.** At 0.41 kJ/cm²
+per K·m that is 546 K·m — a mean excess of about 2.9 K over roughly 190 m,
+which is a deep warm pool and exactly the kind of column the read depth
+argument was about. The deepest-D26 columns are the highest-heat ones, which
+is why truncating them would have mattered more than their count suggests.
+
+**One column exceeded the read, on the very first run:**
+
+```
+! ohc-navy: 1 column(s) never reached 26 C above 300 m, so the read did not
+  contain D26 — published absent rather than understated
+```
+
+That is 1 in about 11,820 warm cells, 0.008%. The coarse sample taken before
+the build found none in 2,063 columns and its deepest D26 was 191 m — so the
+sample was optimistic in exactly the way it was predicted to be, and the
+choice of 300 m over the 200 m the sample alone would have justified is what
+kept the count at one.
+
+**It is not a reason to deepen the read again**, and saying why matters more
+than the number: there is always a deeper column somewhere. What this run
+demonstrated is that the third answer works — the column is a **reported
+hole** rather than a silent underestimate, which is the whole design. The
+depth only tunes how often it fires. If the count climbs into the tens, 400 m
+is two levels away.
+
+### Storage
+
+The tree is **≈219.7 MB, 21.5%** of the cap: 186.5 MB of tiles and 33.2 MB of
+grids and status. It was 169.5 MB before these two, so they cost about 50 MB —
+almost all of it `temp30`'s tile tier. `ohc` takes none, on sea surface
+height's argument.
+
+### What the pair cost each other, which is the reusable part
+
+**Almost nothing, and that was the point of doing them together.** The heat
+content reads levels 0–24 whatever happens; 30 m is index 10, inside that
+span. Publishing it is one more grid and one more tier, no extra request —
+the same trade the currents made when they moved their second layer from 60 m
+to 50 m to land inside a subset the depth-averages already needed.
+
+They are still **two products**, because fates follow upstream reads and each
+issues its own. `ohc-navy` is the costliest read here — 25 levels against one
+— so it is the most likely of the five to fail alone, which is exactly the
+containment a product is for.
 
 ## 2026-08-31: the migration, and what the first run cost to learn
 
@@ -92,9 +160,9 @@ A cold run with all four tile tiers to build: **3 min 36 s** end to end.
 
 ## Open
 
-1. **The upper-ocean heat content layer**, expected to join these five. Its
-   upstream fork — ESPC global with a new 3-D read, against ECCOFS regional —
-   is the owner's and is not decided. Nothing is started.
+1. ~~The upper-ocean heat content layer.~~ **Built 2026-08-31**, on ESPC:
+   ECCOFS stops short of the main development region, so a storm's heat
+   potential along most of its track would be missing. See above.
 2. **`ssh-navy` publishes no forecast frames**, as none of these products do
    today: one hour per run, the one nearest the reader. Whether the scalars
    should bracket the reader the way the currents do has never been asked.
