@@ -106,3 +106,44 @@ the part a later reader will want the reason for — 30 m is below the diurnal
 skin and most of the wind-mixed layer but still inside the water a storm
 overturns, and half of all D26 measured that day sat at 65 m or shallower.
 
+## D4 — 2026-08-31 — Heat content is six-hourly, and the contract learns what a cadence is
+
+The owner's call, to make the tile tier affordable. A tier is rebuilt whenever
+the published hour moves, and a heat-content box is 25 levels — **1.35 GB off
+HYCOM, eight times a day, 77% of everything this repository pulls.** Four
+times a day is 5.4 GB.
+
+**The freshness given up is not freshness a reader can use.** Tropical cyclone
+heat potential varies on timescales of days; NOAA/AOML publish it daily, and
+the integral is over 300 m of water that does not restratify in three hours.
+
+**Expressed against the clock, not against a run count.** "Skip every other
+run" and "take only 6-hourly steps" give the same four updates a day until a
+run is late — and GitHub delivers scheduled runs 45 min to 4 h 19 apart. One
+of those two drifts and the other cannot.
+
+**One-way in two places, which is why this is a decision and not a setting.**
+
+- **`cadenceHours` is now a published header field.** The contract reads it to
+  decide whether a layer being behind is a schedule or a fault, and any
+  consumer that shows an ESPC credit line has to understand it the same way.
+  Adding a field to a published header is a shape readers code against.
+- **The ESPC hour rule is no longer "one model, one hour".** It is now "one
+  model, one hour, unless a layer declares a coarser cadence — and then a
+  whole number of its own steps behind". Every ESPC layer on the map used to
+  be steppable into agreement with every other; that is no longer true and
+  cannot be quietly restored, because a reader's saved view and any port's
+  credit logic now sit on the weaker guarantee.
+
+**What is deliberately NOT weakened**: the hour must still be a real step of
+the declared cadence and no further behind the anchor than the cadence allows.
+A selection landing on 04:37Z, or six hours adrift with a cadence of six,
+still fails. The rule was taught, not switched off — and it derives the
+cadence from the grid's own header rather than from a list of product names,
+so a layer joins the rule the day it publishes.
+
+**What it cost to get right**: `max_age_hours` had to move 2 → 6 in the same
+sitting, or the currency gate marks the product `behind` on every run and
+fails the workflow after every deploy. Three changes, one sitting — the
+cadence, the contract, and the budget.
+

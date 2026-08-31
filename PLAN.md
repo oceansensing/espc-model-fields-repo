@@ -130,6 +130,39 @@ The Pacific and Indian regions went with the change: added that morning to
 lift those basins off the globe, superseded the same day by a tier that does
 it everywhere, and 160 MB a build to keep as a fallback nothing would reach.
 
+### 2026-08-31, last: six-hourly, and what a cadence costs to declare
+
+The tile tier bought a gap-free field and a bandwidth bill: 1.35 GB a build,
+eight builds a day, **77% of everything this repository pulls from HYCOM.**
+The owner's call was six-hourly — four builds, 5.4 GB — on the ground that
+TCHP varies on timescales of days and NOAA/AOML publish it daily.
+
+**It is a skip expressed against the clock.** `snap_hour_down` floors the
+hour the currents published to a multiple of six, so heat content sits on
+00/06/12/18Z. "Every other run" would have been simpler to write and would
+drift, because GitHub delivers scheduled runs 45 min to 4 h 19 apart.
+
+**The expensive part was not the cadence, it was what the cadence broke.**
+The fields do not choose their own hour: `forecast_frames` demands the hour
+the currents published, which is precisely why one model shows one hour across
+three repositories. A six-hourly product is therefore level with its siblings
+or exactly three hours behind — and `test-schema` treats a same-run hour
+mismatch as a **quarantine**, withdrawing the layer. Left alone this would have
+withdrawn heat content on every other run, served the previous copy, and left
+every gate green while doing it.
+
+So three things moved together: the cadence, the contract's hour rule, and
+`max_age_hours` (2 → 6, or the currency gate marks it `behind` every run and
+fails the workflow after every deploy). `DECISIONS.md` D4 records the two
+one-way halves — a new published header field, and a weaker guarantee about
+ESPC hours.
+
+**And a fault of mine, for the third time in one file.** The first cadence
+test called `snap_hour_down` directly, so the mutation that stops *calling* it
+survived a green suite — the same reimplemented-instead-of-invoked shape as
+`region_deg` and `tile_corners` earlier the same day. It goes through
+`wanted_hours` with `currents_hours` stubbed now, and four mutations die.
+
 ### Storage
 
 The tree is **≈219.7 MB, 21.5%** of the cap: 186.5 MB of tiles and 33.2 MB of

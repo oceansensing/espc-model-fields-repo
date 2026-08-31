@@ -144,6 +144,29 @@ the ocean is most favorable. **N is normally 0 or 1.** If it climbs into the
 tens, the read wants deepening to 400 m, which is two levels; if it jumps by
 orders, suspect the upstream rather than the depth.
 
+### Heat content is six-hourly, and three things hold that together
+
+`ohc-navy` floors the hour its siblings take to a multiple of six, so it
+updates four times a day at 00/06/12/18Z and is either level with them or
+exactly three hours behind. It exists to halve the tile tier's 1.35 GB a
+build.
+
+**Changing that cadence means changing three things in one commit**, and
+missing any one of them fails quietly or loudly:
+
+1. `cadence_hours` on the product in `fetch-ocean-fields.py`.
+2. `max_age_hours` here, or the currency gate marks the product `behind` on
+   every run and the workflow fails after every deploy.
+3. Nothing, if the new cadence is still a whole number of steps — but the
+   site's `test-schema.mjs` reads `cadenceHours` off the grid's header and
+   allows a layer to be at most **one cadence** behind the anchor. A cadence
+   the anchor cannot be floored to would quarantine the layer on every run
+   where they disagree, which withdraws it and serves the previous copy while
+   every gate stays green.
+
+**Do not "tidy" this into agreement with its siblings.** Being behind is the
+schedule, not a fault, and that distinction is the whole content of D4.
+
 ### A geometry change does not refetch anything
 
 **The probe-first exit asks whether the MODEL has a newer step, not whether

@@ -22,13 +22,20 @@ top of `CLAUDE.md`.
 Five products, seven roots, one HYCOM read per product — which is why they
 are five products and not one: **fates follow upstream reads.**
 
-| product | roots | tiles |
-| --- | --- | --- |
-| `fields-navy` | `sst-navy.json`, `sss-navy.json` | `tiles-sst-navy`, `tiles-sss-navy` |
-| `ice-navy` | `sic-navy.json`, `sit-navy.json` | `tiles-sic-navy`, `tiles-sit-navy` |
-| `ssh-navy` | `ssh-navy.json` | none, by design |
-| `temp30-navy` | `temp30-navy.json` | `tiles-temp30-navy` |
-| `ohc-navy` | `ohc-navy.json` | none, by design |
+| product | roots | tiles | cadence |
+| --- | --- | --- | --- |
+| `fields-navy` | `sst-navy.json`, `sss-navy.json` | `tiles-sst-navy`, `tiles-sss-navy` | 3-hourly |
+| `ice-navy` | `sic-navy.json`, `sit-navy.json` | `tiles-sic-navy`, `tiles-sit-navy` | 3-hourly |
+| `ssh-navy` | `ssh-navy.json` | none, by design | 3-hourly |
+| `temp30-navy` | `temp30-navy.json` | `tiles-temp30-navy` | 3-hourly |
+| `ohc-navy` | `ohc-navy.json` | `tiles-ohc-navy` | **6-hourly** |
+
+**Every product takes the hour the currents publish** — that is what keeps one
+model on one hour across three repositories — **except `ohc-navy`, which
+floors it to a 6-hourly step.** So heat content updates four times a day, at
+00/06/12/18Z, and is either level with its siblings or exactly three hours
+behind them. Never anything else: `DECISIONS.md` D4 has why, and the site's
+contract checks the relation rather than exempting the layer from it.
 
 **`ohc-navy` is ocean heat content — tropical cyclone heat potential**, in
 kJ/cm²: ρ·c_p times the integral of (T − 26 °C) from the 26 °C isotherm to the
