@@ -212,7 +212,17 @@ title = "Navy ESPC ocean heat content"
 step = "fields"
 roots = ["ohc-navy.json"]
 writes = ["ohc-navy*.json"]
-max_age_hours = 2
+# **Six, not two, because this product deliberately skips every other
+# rollover.** Its siblings take the hour the currents publish, which brackets
+# the reader within 1.5 h; this one only takes a step when that hour is a
+# multiple of six, so it sits up to 4.5 h from the reader by construction.
+# Six leaves room for a late run without hiding a genuine outage.
+#
+# The cadence is the fetcher's (`cadence_hours`) and exists to make the tile
+# tier affordable: 25 levels a box, rebuilt whenever the published hour moves,
+# so halving the moves halves 10.8 GB a day to 5.4. Two would have marked this
+# product `behind` on every run and failed the workflow after every deploy.
+max_age_hours = 6
 namespace = ["python3", "scripts/fetch-ocean-fields.py", "--namespace", "--only=ohc-navy"]
 
 # **Its own cache, and its own Restore/Save pair in the workflow** — the rule
