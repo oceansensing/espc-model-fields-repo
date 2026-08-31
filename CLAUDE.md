@@ -157,9 +157,13 @@ transitional.
   the publish. It does *not* fail on the reverse: a contract root this
   repository has no product for belongs to another origin.
 - **A product that leaves takes its files with it.** The stage is seeded from
-  the last publish, so a root a pipeline stops writing is carried forward for
-  ever and served frozen. That is `realtime-data-repo`'s side of this
-  migration and it cost 21 files there.
+  the last publish, so a root a pipeline stops writing can be carried forward
+  and served frozen. On `realtime-data-repo`'s side of this migration the 21
+  files cleaned themselves up in two runs — the `published` branch is
+  assembled from the declared products, the Pages tree from the stage, so the
+  bank drops them at once and the tree follows. **The rule still holds for the
+  case that actually bites**: a rename inside a product that still exists,
+  whose `writes` glob still matches, which nothing removes at all.
 
 ### Reading a run
 
