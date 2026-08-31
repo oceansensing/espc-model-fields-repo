@@ -227,6 +227,15 @@ jobs:
           path: ${{ steps.plan.outputs.cache-paths-temp30-tiles }}
           key: ${{ steps.plan.outputs.cache-key-temp30-tiles }}
 
+      # The heat content's tier, added 2026-08-31. Its boxes are 25 levels
+      # each, so a cache hit here is worth far more than the others — a cold
+      # build reads about 1.35 GB off HYCOM.
+      - name: Restore heat content tiles
+        uses: actions/cache/restore@0057852bfaa89a56745cba8c7296529d2fc39830 # v4
+        with:
+          path: ${{ steps.plan.outputs.cache-paths-ohc-tiles }}
+          key: ${{ steps.plan.outputs.cache-key-ohc-tiles }}
+
       - name: Fetch, validate, assemble
         id: run
         env:
@@ -253,6 +262,13 @@ jobs:
         with:
           path: ${{ steps.plan.outputs.cache-paths-temp30-tiles }}
           key: ${{ steps.plan.outputs.cache-key-temp30-tiles }}
+
+      - name: Save heat content tiles
+        if: steps.run.outputs.built-ohc-tiles == 'true'
+        uses: actions/cache/save@0057852bfaa89a56745cba8c7296529d2fc39830 # v4
+        with:
+          path: ${{ steps.plan.outputs.cache-paths-ohc-tiles }}
+          key: ${{ steps.plan.outputs.cache-key-ohc-tiles }}
 
       - name: Upload the site
         if: steps.run.outputs.deploy == 'true'

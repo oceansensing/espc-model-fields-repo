@@ -214,3 +214,22 @@ roots = ["ohc-navy.json"]
 writes = ["ohc-navy*.json"]
 max_age_hours = 2
 namespace = ["python3", "scripts/fetch-ocean-fields.py", "--namespace", "--only=ohc-navy"]
+
+# **Its own cache, and its own Restore/Save pair in the workflow** — the rule
+# `ice-navy.tiles` states: `plan` writes one `cache-key-<cache>` per product,
+# so two products sharing a name would write that output twice and the
+# workflow would read whichever came last.
+#
+# **The costliest tier here by a distance.** A box is 25 levels rather than
+# one, about 12 MB off HYCOM, and `tileLat` bounds it to the 108 boxes that
+# can hold a 26 C isotherm — so ~1.35 GB a build against the field tier's
+# ~79 MB. It is spent because a tile mosaic needs no containment: it is the
+# only tier that has no resolution gap at any zoom or centre, which two live
+# reports of a coarse Gulf are what bought.
+[products.ohc-navy.tiles]
+build = ["python3", "scripts/fetch-ocean-fields.py", "--tiles", "--only=ohc-navy"]
+key = ["python3", "scripts/fetch-ocean-fields.py", "--tile-key", "--only=ohc-navy"]
+cache = "ohc-tiles"
+match = [
+  ["tiles-ohc-navy", "ohc-navy.json"],
+]
