@@ -14,7 +14,7 @@ origin that a rename would 404.
 `CLAUDE.md` is the operator's and maintainer's half — what to run, what must
 move together, what has already gone wrong. `PLAN.md` is the running record.
 `DECISIONS.md` indexes the dated one-way decisions. Which document gets what,
-across all eight repositories of this project, is the doctrine block at the
+across all ten repositories of this project, is the doctrine block at the
 top of `CLAUDE.md`.
 
 ## What it publishes
