@@ -189,9 +189,12 @@ hours, on this model.
 
 ### The step's scope and the products' scope are ONE change
 
-**`fetch-ocean-fields.py` publishes six families (2026-08-31) and this
-repository owns five.** The `fields` step therefore carries
-`--only=sst-navy,sss-navy,sic-navy,sit-navy,ssh-navy`, and it has to.
+**`fetch-ocean-fields.py` publishes ten families and this repository owns
+seven** (five on the morning of 2026-08-31, the 30 m temperature and heat
+content that afternoon). The `fields` step therefore carries
+`--only=sst-navy,sss-navy,sic-navy,sit-navy,ssh-navy,temp30-navy,ohc-navy`,
+and it has to — this paragraph once quoted the five-name form while the step
+carried seven, which is the rule below failing on its own example.
 
 Invoked bare it fetches OISST too, writes three files no product here
 declares, and the write fence refuses the run — which is what happened on the
@@ -206,14 +209,14 @@ for ever, which is the shape three other entries in this project are about.
 
 ### The ESPC hour rule is cross-origin and permanent
 
-One model run publishes one hour, and its members span **three** repositories
-now: the currents in `espc-model-repo`, these five here, and nothing in
-`realtime-data-repo` since 2026-08-31. No repository can enforce that alone.
+One model run publishes one hour, and its members span **two** repositories
+now: the five currents roots in `espc-model-repo` and the seven scalars here,
+and nothing in `realtime-data-repo` since 2026-08-31. No repository can enforce that alone.
 Only the site can, reading every origin's manifest.
 
 It works because the anchor is a pure function of time — the origins agree
 *without coordinating*, and what splitting cost was the gate, not the
-agreement. The arrangement that would let one pipeline check it is all ten
+agreement. The arrangement that would let one pipeline check it is all twelve
 roots in one repository, which is exactly what storage forbids. Permanent, not
 transitional.
 

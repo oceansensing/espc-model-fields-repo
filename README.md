@@ -95,8 +95,8 @@ about 13%** — the per-product tile figures it was built from were close
 under-counted was the regional grids, which are several MB each and are not in
 a tile tier at all.
 
-There is room for the planned upper-ocean heat content layer and a great deal
-besides. **The reason this repository exists is that there was not**: the five
+There is room beyond the heat content layer that landed on 2026-08-31, and a
+great deal besides. **The reason this repository exists is that there was not**: the five
 roots plus the currents in one repository is 982 MB, 96% of the cap, less than
 one current frame of margin.
 
@@ -130,7 +130,7 @@ metadata requests.
 
 ```
 oceansensing.org/espc-model-fields-repo/
-  map/          the grids, their regional cuts and the four tile tiers
+  map/          the grids, their regional cuts and the six tile tiers
   status/
     status.json one object per product: fate, reason, checked, updated, hour,
                 and the roots this origin serves — which is what the map

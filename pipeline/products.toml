@@ -1,7 +1,8 @@
 # What this repository publishes: the ESPC SCALAR fields, and nothing else.
 #
-# Sea surface temperature, salinity, height, and sea ice concentration and
-# thickness — all from the same US Navy ESPC-D-V02 run the currents come off,
+# Sea surface temperature, salinity, height, sea ice concentration and
+# thickness, temperature at 30 m and ocean heat content — all from the same
+# US Navy ESPC-D-V02 run the currents come off,
 # and all cheap. The currents themselves are `espc-model-repo`, which is the
 # ESPC **currents** repository despite its name (a legacy exception, kept
 # because its URL is a live origin that a rename would 404).
@@ -10,7 +11,8 @@
 # `DECISIONS.md` D2, 2026-08-30). The axis that costs bytes is vectors against
 # scalars: that repository's tile tier is 738.7 MB over ten sets — two leads
 # each for surface, 50 m and the three caps — which is 89% of its own bytes.
-# A 2-D scalar field is 44-58 MB. Putting these five roots into
+# A 2-D scalar field is 44-58 MB. Putting the original five roots (seven
+# since 2026-08-31, with the 30 m temperature and heat content) into
 # `espc-model-repo` lands at 982 MB against a 1 GB Pages cap: 96%, about
 # 42 MB spare, which is less than one current frame. Split off from the
 # currents they sit at 150.3 MB, 14.7%, or 195.3 MB with the upper-ocean heat
@@ -41,10 +43,10 @@
 #   forward for ever. That is the other half of this migration and it happens
 #   in `realtime-data-repo`, not here.
 #
-# **The ESPC hour rule spans three origins now and only the site can enforce
-# it.** Ten roots have to agree on the model run's anchor: the five here and
-# the five in `espc-model-repo`. The one arrangement that would let a single
-# pipeline check that — all ten in one repository — is exactly what the
+# **The ESPC hour rule spans two origins and only the site can enforce
+# it.** Twelve roots have to agree on the model run's anchor: the seven here
+# and the five in `espc-model-repo`. The one arrangement that would let a
+# single pipeline check that — all twelve in one repository — is exactly what the
 # storage cap forbids, so cross-origin enforcement is permanent rather than a
 # stage toward something tidier. It works because the anchor is a pure
 # function of time: the rule already agrees WITHOUT the origins coordinating,
@@ -74,9 +76,9 @@ timeout_minutes = 30
 # temperature publish while a broken ice read is held.
 #
 # **`--only` on the STEP, and the first run here is what taught it.** The
-# script publishes six families as of 2026-08-31 — the five this repository
-# owns and OISST, which stayed in `realtime-data-repo`. Invoked bare it fetches all
-# four, so the first run wrote `sst-oisst.json`, `sic-oisst.json` and
+# script publishes ten families (`PRODUCTS` in `fetch-ocean-fields.py`) — the
+# seven this repository owns and OISST's three, which stayed in
+# `realtime-data-repo`. Invoked bare it fetches all of them, so the first run wrote `sst-oisst.json`, `sic-oisst.json` and
 # `ssta-oisst.json` into a tree where no product declares them, and the write
 # fence refused the run outright: `FENCE  sst-oisst.json: written by no
 # declared namespace`. Correct, and loud, and exactly what that fence is for.

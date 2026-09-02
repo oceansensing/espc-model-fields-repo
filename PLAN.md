@@ -145,7 +145,7 @@ drift, because GitHub delivers scheduled runs 45 min to 4 h 19 apart.
 **The expensive part was not the cadence, it was what the cadence broke.**
 The fields do not choose their own hour: `forecast_frames` demands the hour
 the currents published, which is precisely why one model shows one hour across
-three repositories. A six-hourly product is therefore level with its siblings
+two repositories. A six-hourly product is therefore level with its siblings
 or exactly three hours behind — and `test-schema` treats a same-run hour
 mismatch as a **quarantine**, withdrawing the layer. Left alone this would have
 withdrawn heat content on every other run, served the previous copy, and left
