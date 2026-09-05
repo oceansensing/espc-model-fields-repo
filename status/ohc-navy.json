@@ -1,0 +1,36 @@
+{
+ "schema": 1,
+ "product": "ohc-navy",
+ "title": "Navy ESPC ocean heat content",
+ "fate": "fresh",
+ "reason": null,
+ "checked": "2026-09-05T23:21:13Z",
+ "updated": "2026-09-05T22:44:32Z",
+ "hour": "2026-09-06T00:00:00Z",
+ "modelRun": "2026-09-04T12:00:00Z",
+ "source": "US Navy ESPC-D-V02",
+ "hours": [
+  "2026-09-06T00:00:00Z"
+ ],
+ "files": {
+  "ohc-navy-atlantic.json": {
+   "bytes": 3491209
+  },
+  "ohc-navy-indian.json": {
+   "bytes": 1046376
+  },
+  "ohc-navy-pacific.json": {
+   "bytes": 2993516
+  },
+  "ohc-navy.json": {
+   "bytes": 333798,
+   "sha256": "5e407b812022d254e2bccff79e3a47cfee7e1cf0f857c1c1bc5cc3baea5cb54f"
+  }
+ },
+ "tiles": {
+  "tiles-ohc-navy": {
+   "state": "kept",
+   "reason": null
+  }
+ }
+}

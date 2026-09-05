@@ -1,0 +1,23 @@
+{
+ "schema": 1,
+ "generated": "2026-09-05T23:21:13Z",
+ "mode": "full",
+ "fates": {
+  "fields-navy": "fresh",
+  "ice-navy": "fresh",
+  "ssh-navy": "fresh",
+  "temp30-navy": "fresh",
+  "ohc-navy": "fresh"
+ },
+ "reasons": {},
+ "built": {},
+ "withheld": {
+  "fields-navy": {},
+  "ice-navy": {},
+  "temp30-navy": {},
+  "ohc-navy": {}
+ },
+ "deploy": true,
+ "notes": [],
+ "behind": []
+}
