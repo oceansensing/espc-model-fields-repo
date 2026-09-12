@@ -1,0 +1,113 @@
+{
+ "schema": 2,
+ "generated": "2026-09-12T19:40:26Z",
+ "mode": "full",
+ "run": {
+  "id": "34714824840",
+  "url": "https://github.com/oceansensing/espc-model-fields-repo/actions/runs/34714824840"
+ },
+ "products": {
+  "fields-navy": {
+   "title": "Navy ESPC temperature and salinity",
+   "roots": [
+    "sst-navy.json",
+    "sss-navy.json"
+   ],
+   "fate": "fresh",
+   "reason": null,
+   "checked": "2026-09-12T19:40:26Z",
+   "updated": "2026-09-12T18:43:08Z",
+   "hour": "2026-09-12T21:00:00Z",
+   "modelRun": "2026-09-11T12:00:00Z",
+   "source": "US Navy ESPC-D-V02",
+   "hours": [
+    "2026-09-12T21:00:00Z"
+   ],
+   "stale": false,
+   "staleCause": null,
+   "ageHours": 1.33,
+   "nearestOffsetHours": -1.33
+  },
+  "ice-navy": {
+   "title": "Navy ESPC sea ice concentration and thickness",
+   "roots": [
+    "sic-navy.json",
+    "sit-navy.json"
+   ],
+   "fate": "fresh",
+   "reason": null,
+   "checked": "2026-09-12T19:40:26Z",
+   "updated": "2026-09-12T18:43:08Z",
+   "hour": "2026-09-12T21:00:00Z",
+   "modelRun": "2026-09-11T12:00:00Z",
+   "source": "US Navy ESPC-D-V02",
+   "hours": [
+    "2026-09-12T21:00:00Z"
+   ],
+   "stale": false,
+   "staleCause": null,
+   "ageHours": 1.33,
+   "nearestOffsetHours": -1.33
+  },
+  "ssh-navy": {
+   "title": "Navy ESPC sea surface height",
+   "roots": [
+    "ssh-navy.json"
+   ],
+   "fate": "fresh",
+   "reason": null,
+   "checked": "2026-09-12T19:40:26Z",
+   "updated": "2026-09-12T18:43:08Z",
+   "hour": "2026-09-12T21:00:00Z",
+   "modelRun": "2026-09-11T12:00:00Z",
+   "source": "US Navy ESPC-D-V02",
+   "hours": [
+    "2026-09-12T21:00:00Z"
+   ],
+   "stale": false,
+   "staleCause": null,
+   "ageHours": 1.33,
+   "nearestOffsetHours": -1.33
+  },
+  "temp30-navy": {
+   "title": "Navy ESPC temperature at 30 m",
+   "roots": [
+    "temp30-navy.json"
+   ],
+   "fate": "fresh",
+   "reason": null,
+   "checked": "2026-09-12T19:40:26Z",
+   "updated": "2026-09-12T18:43:08Z",
+   "hour": "2026-09-12T21:00:00Z",
+   "modelRun": "2026-09-11T12:00:00Z",
+   "source": "US Navy ESPC-D-V02",
+   "hours": [
+    "2026-09-12T21:00:00Z"
+   ],
+   "stale": false,
+   "staleCause": null,
+   "ageHours": 1.33,
+   "nearestOffsetHours": -1.33
+  },
+  "ohc-navy": {
+   "title": "Navy ESPC ocean heat content",
+   "roots": [
+    "ohc-navy.json"
+   ],
+   "fate": "fresh",
+   "reason": null,
+   "checked": "2026-09-12T19:40:26Z",
+   "updated": "2026-09-12T16:31:35Z",
+   "hour": "2026-09-12T18:00:00Z",
+   "modelRun": "2026-09-11T12:00:00Z",
+   "source": "US Navy ESPC-D-V02",
+   "hours": [
+    "2026-09-12T18:00:00Z"
+   ],
+   "stale": false,
+   "staleCause": null,
+   "ageHours": 1.67,
+   "nearestOffsetHours": 1.67
+  }
+ }
+}
