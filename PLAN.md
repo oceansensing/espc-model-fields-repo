@@ -289,3 +289,33 @@ A cold run with all four tile tiers to build: **3 min 36 s** end to end.
    doctrine's question 6, and the only automated help is the site's
    `check:docs`, which reads this repository's `products.toml` and its
    `CLAUDE.md` doctrine block but not its README.
+
+## 2026-09-11: HYCOM did not answer, and each fetch waited out thirty minutes
+
+Written 2026-09-19 from the run logs and GitHub's usage report. On 09-11 this
+repository's 77 runs took 364 minutes of wall time against 187–239 on the
+three days before, and the usage report billed 380 minutes against 195–283
+(all discounted: the repository is public). Fifty-seven of the runs were the
+ordinary no-op, under 90 s. The difference was five runs of 14 to 41 minutes
+— 2,461 s, 2,462, 2,451, 1,341 and 849 — and the longest says what they
+were (run 34615971832): `Plan the run` spent 598 s because the namespace
+probe used its whole `probe budget of 150s` four times before
+`tds.hycom.org/thredds/dodsC/FMRC_ESPC-D-V02_ts3z/…best.ncd.das` answered
+(`<urlopen error timed out>`), then the fetcher logged `! probe inconclusive
+(<urlopen error timed out>) — fetching`, and `--- step fields: timed out
+after 30 min` held all five products — `fields-navy`, `ice-navy`,
+`ssh-navy`, `temp30-navy`, `ohc-navy`. Nothing wrong was published; the
+products were served from the last publish with their tile tiers withheld,
+as the contract has it for a held grid.
+
+**The shape is `realtime-data-repo`'s of the same day**, against a different
+host: an inconclusive probe falls through to a fetch, and when the probe was
+inconclusive because the host is not answering, the fetch waits on the same
+host until the step's thirty minutes end it, and the next poll does it
+again. Four runs GitHub lists as `cancelled` that day never started a job —
+the concurrency group keeps one pending run and replaces it — and cost
+nothing. **Levers, noted and not taken:** a probe that TIMED OUT (rather
+than answered unhelpfully) could hold the products until the next poll
+instead of fetching, and the probe's four 150 s budgets in `plan` could
+share one. The minutes are free, so the reason to pull either would be the
+host, not the bill.
