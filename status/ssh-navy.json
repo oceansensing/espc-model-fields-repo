@@ -1,0 +1,30 @@
+{
+ "schema": 1,
+ "product": "ssh-navy",
+ "title": "Navy ESPC sea surface height",
+ "fate": "fresh",
+ "reason": null,
+ "checked": "2026-09-19T16:59:01Z",
+ "updated": "2026-09-19T15:45:12Z",
+ "hour": "2026-09-19T18:00:00Z",
+ "modelRun": "2026-09-18T12:00:00Z",
+ "source": "US Navy ESPC-D-V02",
+ "hours": [
+  "2026-09-19T18:00:00Z"
+ ],
+ "files": {
+  "ssh-navy-antarctic.json": {
+   "bytes": 2117927
+  },
+  "ssh-navy-arctic.json": {
+   "bytes": 2802587
+  },
+  "ssh-navy-atlantic.json": {
+   "bytes": 835873
+  },
+  "ssh-navy.json": {
+   "bytes": 314654,
+   "sha256": "32ad8b5e33c51920db50cae3a9e1ba232a6fa804531abc50384f3e4f6f16fba3"
+  }
+ }
+}
