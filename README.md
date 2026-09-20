@@ -134,7 +134,10 @@ oceansensing.org/espc-model-fields-repo/
   status/
     status.json one object per product: fate, reason, checked, updated, hour,
                 and the roots this origin serves — which is what the map
-                routes on
+                routes on; and, since 2026-09-20, `schedule` — this
+                workflow's crons and the longest gap between two of them
+                (0.33 h here), which is the budget the site's watchdog holds
+                this origin's silence to
     plan.json   what this run intended before it started
     receipt.json  what it actually did
 ```
