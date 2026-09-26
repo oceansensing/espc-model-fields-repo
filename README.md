@@ -146,8 +146,8 @@ The `map/` layout is the contract defined by `schema.ts` in the site
 repository, and the site's own `test-schema.mjs` runs over the assembled tree
 before anything deploys. The contract is the consumer's, deliberately.
 
-The same tree also goes to Cloudflare R2
-(`oceannow-data/espc-model-fields-repo/`), which the Ocean Now app reads; the
+The same tree also goes to a second host, Cloudflare R2, under this
+repository's name; the
 site's `pipeline/publish_r2.py` has the rules.
 
 ## Structure
