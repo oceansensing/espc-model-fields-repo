@@ -12,8 +12,9 @@ cron: `17,37,57 * * * *` plus `22 0,3,6,9,12,15,18,21` following the
 three-hourly anchor. **Five products, seven roots, five tile tiers** —
 `fields-navy`, `ice-navy`, `ssh-navy`, `temp30-navy` and `ohc-navy`.
 
-It holds no code. The orchestrator comes from `realtime-data-repo` and the
-fetchers and contract from `oceansensing.github.io`, both checked out at run
+It holds no code. The orchestrator, the fetchers and the contract all come
+from `oceansensing.github.io` (the orchestrator in its private `pipeline/`
+since 2026-09-26, from `realtime-data-repo` before), checked out at run
 time, with `PIPELINE_ROOT` pointing the orchestrator at this workspace.
 
 ## 2026-08-31: ocean heat content, and a 30 m temperature that came free
