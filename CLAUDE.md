@@ -1,7 +1,8 @@
 # espc-model-fields-repo
 
-The ESPC **scalar** fields — the cheap half of the model. Nothing is built; `README.md` says what the source is and
-`PLAN.md` is the founding plan.
+The ESPC **scalar** fields — the cheap half of the model. Live since
+2026-08-31; `README.md` says what it publishes and `PLAN.md` is the running
+record.
 
 <!-- DOC-DOCTRINE v1 begin — identical in all ten repositories; `check:docs` holds them equal. Edit one, sync all. -->
 ## Where truth lives, and what "update docs" means
@@ -255,9 +256,11 @@ fetching the last run that succeeded.
 
 ### The checkout that everything depends on
 
-This repository reads the **private** site repository for its fetchers, and a
-read-only deploy key is the only reason it can — `PIPELINES_SSH_KEY` here,
-public half `espc-model-fields-repo-checkout` on the site repository. Its own
+This repository reads the **private** site repository for its fetchers and,
+since 2026-09-26, the pipeline itself; the `publish-r2` job's sparse checkout
+of `pipeline/` uses the same key. A read-only deploy key is the only reason it
+can — `PIPELINES_SSH_KEY` here, public half `espc-model-fields-repo-checkout`
+on the site repository. Its own
 key, not the one another repository uses, so revoking or rotating one does not
 take the other down.
 

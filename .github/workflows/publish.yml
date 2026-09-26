@@ -1,19 +1,20 @@
 # The ESPC scalar fields publish, and this repository holds none of the code
 # that does it.
 #
-# The **fetchers** live in `oceansensing.github.io` (`scripts/`) and the
-# **orchestrator** lives in `realtime-data-repo` (`pipeline/`). Both are
-# checked out here at run time, and `PIPELINE_ROOT` points the orchestrator at
-# *this* workspace so it assembles and publishes this repository's tree from
+# The **fetchers** (`scripts/`) and, since 2026-09-26, the **orchestrator**
+# (`pipeline/`) both live in the private `oceansensing.github.io`, checked out
+# once here at run time as `site/`, and `PIPELINE_ROOT` points the orchestrator
+# at *this* workspace so it assembles and publishes this repository's tree from
 # this repository's `pipeline/products.toml`.
 #
 # The alternative was copying the orchestrator into every new data repository.
 # Three faults were found in that file in a single day, and each would have
-# had to be found twice and fixed twice. This is the third repository to run
-# it and the second to run it on a tree it does not live in.
+# had to be found twice and fixed twice. This was the third repository to run
+# it and the second to run it on a tree it did not live in; since 2026-09-26
+# every origin does.
 #
 # **This file is `espc-model-repo`'s with three changes**, kept deliberately
-# close so the two can be diffed: different cron minutes, two cache pairs
+# close so the two can be diffed: different cron minutes, four cache pairs
 # instead of three, and this header. Everything else — the checkout order, the
 # deploy-key reasoning, the failure-message step, the two-job privilege split
 # — is that file's and should be changed in both or neither.

@@ -9,7 +9,7 @@ storage measurements that made this repository necessary.
 
 Publishes to <https://oceansensing.org/espc-model-fields-repo/> on its own
 cron: `17,37,57 * * * *` plus `22 0,3,6,9,12,15,18,21` following the
-three-hourly anchor. **Five products, seven roots, five tile tiers** —
+three-hourly anchor. **Five products, seven roots, six tile tiers** —
 `fields-navy`, `ice-navy`, `ssh-navy`, `temp30-navy` and `ohc-navy`.
 
 It holds no code. The orchestrator, the fetchers and the contract all come

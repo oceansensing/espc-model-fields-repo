@@ -102,12 +102,12 @@ one current frame of margin.
 
 ## How it runs
 
-**No code here.** The orchestrator (`pipeline/orchestrate.py`) is checked out
-from `realtime-data-repo`; the fetchers and the published-file contract
-(`schema.ts`) from `oceansensing.github.io`. `PIPELINE_ROOT` points the
-orchestrator at this workspace, so it assembles and publishes this
-repository's tree from this repository's declaration. A change to a fetcher or
-to the contract lands here on the **next run**, not on any push here.
+**No code here.** The orchestrator (the site's private `pipeline/`, since
+2026-09-26), the fetchers and the published-file contract (`schema.ts`) all
+come from `oceansensing.github.io`, checked out at run time. `PIPELINE_ROOT`
+points the orchestrator at this workspace, so it assembles and publishes this
+repository's tree from this repository's declaration. A change to any of them
+lands here on the **next run**, not on any push here.
 
 This repository carries `pipeline/products.toml` — what it publishes — and
 nothing else executable.
@@ -145,6 +145,10 @@ oceansensing.org/espc-model-fields-repo/
 The `map/` layout is the contract defined by `schema.ts` in the site
 repository, and the site's own `test-schema.mjs` runs over the assembled tree
 before anything deploys. The contract is the consumer's, deliberately.
+
+The same tree also goes to Cloudflare R2
+(`oceannow-data/espc-model-fields-repo/`), which the Ocean Now app reads; the
+site's `pipeline/publish_r2.py` has the rules.
 
 ## Structure
 
