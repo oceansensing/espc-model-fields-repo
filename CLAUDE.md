@@ -160,7 +160,9 @@ missing any one of them fails quietly or loudly:
 
 1. `cadence_hours` on the product in `fetch-ocean-fields.py`.
 2. `max_age_hours` here, or the currency gate marks the product `behind` on
-   every run and the workflow fails after every deploy.
+   every run and the site's watchdog reports it as ours twice a day. (The
+   workflow no longer fails on `behind`: that step was removed on
+   2026-08-27, so the run stays green — read the watchdog's issue.)
 3. Nothing, if the new cadence is still a whole number of steps — but the
    site's `test-schema.mjs` reads `cadenceHours` off the grid's header and
    allows a layer to be at most **one cadence** behind the anchor. A cadence
