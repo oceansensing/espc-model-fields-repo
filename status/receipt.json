@@ -1,0 +1,28 @@
+{
+ "schema": 1,
+ "generated": "2026-10-04T04:37:39Z",
+ "mode": "full",
+ "fates": {
+  "fields-navy": "fresh",
+  "ice-navy": "fresh",
+  "ssh-navy": "fresh",
+  "temp30-navy": "fresh",
+  "ohc-navy": "fresh"
+ },
+ "reasons": {},
+ "built": {
+  "field-tiles": true,
+  "ice-tiles": true,
+  "temp30-tiles": true,
+  "ohc-tiles": true
+ },
+ "withheld": {
+  "fields-navy": {},
+  "ice-navy": {},
+  "temp30-navy": {},
+  "ohc-navy": {}
+ },
+ "deploy": true,
+ "notes": [],
+ "behind": []
+}
