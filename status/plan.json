@@ -1,0 +1,19 @@
+{
+ "schema": 1,
+ "generated": "2026-10-10T20:58:26Z",
+ "mode": "full",
+ "products": {
+  "fields-navy": {
+   "tile_key": "sstnavy20261007T12v20261010T21-sssnavy20261007T12v20261010T21"
+  },
+  "ice-navy": {
+   "tile_key": "sicnavy20261008T12v20261010T21-sitnavy20261008T12v20261010T21"
+  },
+  "temp30-navy": {
+   "tile_key": "temp30navy20261007T12v20261010T21"
+  },
+  "ohc-navy": {
+   "tile_key": "ohcnavy20261007T12v20261010T18"
+  }
+ }
+}

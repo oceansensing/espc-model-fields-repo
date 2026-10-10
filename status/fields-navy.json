@@ -1,0 +1,53 @@
+{
+ "schema": 1,
+ "product": "fields-navy",
+ "title": "Navy ESPC temperature and salinity",
+ "fate": "fresh",
+ "reason": null,
+ "checked": "2026-10-10T20:59:02Z",
+ "updated": "2026-10-10T19:45:36Z",
+ "hour": "2026-10-10T21:00:00Z",
+ "modelRun": "2026-10-07T12:00:00Z",
+ "source": "US Navy ESPC-D-V02",
+ "hours": [
+  "2026-10-10T21:00:00Z"
+ ],
+ "files": {
+  "sss-navy-antarctic.json": {
+   "bytes": 2126455
+  },
+  "sss-navy-arctic.json": {
+   "bytes": 2821725
+  },
+  "sss-navy-atlantic.json": {
+   "bytes": 884114
+  },
+  "sss-navy.json": {
+   "bytes": 334368,
+   "sha256": "db9a8dac11bcf3cebfb57b1452d1b68e253a3d26761929f2eb3e63021c80f43c"
+  },
+  "sst-navy-antarctic.json": {
+   "bytes": 2004791
+  },
+  "sst-navy-arctic.json": {
+   "bytes": 2704632
+  },
+  "sst-navy-atlantic.json": {
+   "bytes": 878744
+  },
+  "sst-navy.json": {
+   "bytes": 325439,
+   "sha256": "e64729165394696585e98e9ec28369ed108db20c4aa6feae55150f33a0b9a70d"
+  }
+ },
+ "tiles": {
+  "tiles-sss-navy": {
+   "state": "kept",
+   "reason": null
+  },
+  "tiles-sst-navy": {
+   "state": "kept",
+   "reason": null
+  }
+ }
+}
