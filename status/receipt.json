@@ -1,0 +1,34 @@
+{
+ "schema": 1,
+ "generated": "2026-10-17T17:22:26Z",
+ "mode": "full",
+ "fates": {
+  "fields-navy": "fresh",
+  "ice-navy": "fresh",
+  "ssh-navy": "fresh",
+  "temp30-navy": "fresh",
+  "ohc-navy": "fresh"
+ },
+ "reasons": {},
+ "built": {},
+ "withheld": {
+  "fields-navy": {},
+  "ice-navy": {},
+  "temp30-navy": {},
+  "ohc-navy": {}
+ },
+ "deploy": true,
+ "notes": [
+  "fields-navy: nearest frame is 2.4 h old, past its 2 h budget \u2014 upstream has nothing newer",
+  "ice-navy: nearest frame is 2.4 h old, past its 2 h budget \u2014 upstream has nothing newer",
+  "ssh-navy: nearest frame is 2.4 h old, past its 2 h budget \u2014 upstream has nothing newer",
+  "temp30-navy: nearest frame is 2.4 h old, past its 2 h budget \u2014 upstream has nothing newer"
+ ],
+ "behind": [],
+ "tile_keys": {
+  "fields-navy": "sstnavy20261015T12v20261017T15-sssnavy20261015T12v20261017T15",
+  "ice-navy": "sicnavy20261016T12v20261017T15-sitnavy20261016T12v20261017T15",
+  "temp30-navy": "temp30navy20261015T12v20261017T15",
+  "ohc-navy": "ohcnavy20261015T12v20261017T12"
+ }
+}
