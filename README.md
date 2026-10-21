@@ -1,7 +1,7 @@
 # espc-model-fields-repo
 
 The ESPC **scalar** fields — the cheap half of one model — published for the
-[C4PO ocean map](https://oceansensing.org/visualization/) at
+[oceansensing.org ocean map](https://oceansensing.org/visualization/) at
 <https://oceansensing.org/espc-model-fields-repo/>. A sibling data repository:
 its own Pages site, its own cron, its own gigabyte, holding no code of its own.
 
