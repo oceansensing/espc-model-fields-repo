@@ -1,0 +1,23 @@
+{
+ "schema": 1,
+ "generated": "2026-10-24T14:02:10Z",
+ "mode": "full",
+ "products": {
+  "fields-navy": {
+   "tile_key": "sstnavy20261023T12v20261024T12-sssnavy20261023T12v20261024T12",
+   "held_key": "sstnavy20261023T12v20261024T09-sssnavy20261023T12v20261024T09"
+  },
+  "ice-navy": {
+   "tile_key": "sicnavy20261023T12v20261024T12-sitnavy20261023T12v20261024T12",
+   "held_key": "sicnavy20261022T12v20261024T09-sitnavy20261022T12v20261024T09"
+  },
+  "temp30-navy": {
+   "tile_key": "temp30navy20261023T12v20261024T12",
+   "held_key": "temp30navy20261023T12v20261024T09"
+  },
+  "ohc-navy": {
+   "tile_key": "ohcnavy20261023T12v20261024T12",
+   "held_key": "ohcnavy20261022T12v20261024T06"
+  }
+ }
+}

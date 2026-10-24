@@ -1,0 +1,46 @@
+{
+ "schema": 1,
+ "generated": "2026-10-24T14:32:33Z",
+ "mode": "full",
+ "fates": {
+  "fields-navy": "held",
+  "ice-navy": "held",
+  "ssh-navy": "held",
+  "temp30-navy": "held",
+  "ohc-navy": "held"
+ },
+ "reasons": {
+  "fields-navy": "step fields timed out after 30 min",
+  "ice-navy": "step fields timed out after 30 min",
+  "ssh-navy": "step fields timed out after 30 min",
+  "temp30-navy": "step fields timed out after 30 min",
+  "ohc-navy": "step fields timed out after 30 min"
+ },
+ "built": {
+  "field-tiles": false,
+  "ice-tiles": false,
+  "temp30-tiles": false,
+  "ohc-tiles": false
+ },
+ "withheld": {
+  "fields-navy": {},
+  "ice-navy": {},
+  "temp30-navy": {},
+  "ohc-navy": {}
+ },
+ "deploy": true,
+ "notes": [],
+ "behind": [
+  "fields-navy (5.5 h, held)",
+  "ice-navy (5.5 h, held)",
+  "ssh-navy (5.5 h, held)",
+  "temp30-navy (5.5 h, held)",
+  "ohc-navy (8.5 h, held)"
+ ],
+ "tile_keys": {
+  "fields-navy": "sstnavy20261023T12v20261024T09-sssnavy20261023T12v20261024T09",
+  "ice-navy": "sicnavy20261022T12v20261024T09-sitnavy20261022T12v20261024T09",
+  "temp30-navy": "temp30navy20261023T12v20261024T09",
+  "ohc-navy": "ohcnavy20261022T12v20261024T06"
+ }
+}
