@@ -1,0 +1,47 @@
+{
+ "schema": 1,
+ "product": "ice-navy",
+ "title": "Navy ESPC sea ice concentration and thickness",
+ "fate": "fresh",
+ "reason": null,
+ "checked": "2026-10-31T16:38:52Z",
+ "updated": "2026-10-31T13:25:32Z",
+ "hour": "2026-10-31T15:00:00Z",
+ "modelRun": "2026-10-29T12:00:00Z",
+ "source": "US Navy ESPC-D-V02",
+ "hours": [
+  "2026-10-31T15:00:00Z"
+ ],
+ "files": {
+  "sic-navy-antarctic.json": {
+   "bytes": 1823730
+  },
+  "sic-navy-arctic.json": {
+   "bytes": 2491841
+  },
+  "sic-navy.json": {
+   "bytes": 287994,
+   "sha256": "9cd5635ac64c91d01f3220ddc58bbe305adcc81f2d557cc363e5bffb0f4b2773"
+  },
+  "sit-navy-antarctic.json": {
+   "bytes": 1988666
+  },
+  "sit-navy-arctic.json": {
+   "bytes": 2628224
+  },
+  "sit-navy.json": {
+   "bytes": 324888,
+   "sha256": "5d47b71ddd3ffdaef48348a5e8b964e111863c203b514df039365c94ce5c0f02"
+  }
+ },
+ "tiles": {
+  "tiles-sic-navy": {
+   "state": "kept",
+   "reason": null
+  },
+  "tiles-sit-navy": {
+   "state": "kept",
+   "reason": null
+  }
+ }
+}

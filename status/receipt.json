@@ -1,0 +1,29 @@
+{
+ "schema": 1,
+ "generated": "2026-10-31T16:38:52Z",
+ "mode": "full",
+ "fates": {
+  "fields-navy": "fresh",
+  "ice-navy": "fresh",
+  "ssh-navy": "fresh",
+  "temp30-navy": "fresh",
+  "ohc-navy": "fresh"
+ },
+ "reasons": {},
+ "built": {},
+ "withheld": {
+  "fields-navy": {},
+  "ice-navy": {},
+  "temp30-navy": {},
+  "ohc-navy": {}
+ },
+ "deploy": true,
+ "notes": [],
+ "behind": [],
+ "tile_keys": {
+  "fields-navy": "sstnavy20261028T12v20261031T15-sssnavy20261028T12v20261031T15",
+  "ice-navy": "sicnavy20261029T12v20261031T15-sitnavy20261029T12v20261031T15",
+  "temp30-navy": "temp30navy20261028T12v20261031T15",
+  "ohc-navy": "ohcnavy20261028T12v20261031T12"
+ }
+}
