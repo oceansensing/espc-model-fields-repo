@@ -1,0 +1,36 @@
+{
+ "schema": 1,
+ "product": "temp30-navy",
+ "title": "Navy ESPC temperature at 30 m",
+ "fate": "fresh",
+ "reason": null,
+ "checked": "2026-11-14T11:38:56Z",
+ "updated": "2026-11-14T10:10:37Z",
+ "hour": "2026-11-14T12:00:00Z",
+ "modelRun": "2026-11-13T12:00:00Z",
+ "source": "US Navy ESPC-D-V02",
+ "hours": [
+  "2026-11-14T12:00:00Z"
+ ],
+ "files": {
+  "temp30-navy-antarctic.json": {
+   "bytes": 1999769
+  },
+  "temp30-navy-arctic.json": {
+   "bytes": 2724247
+  },
+  "temp30-navy-atlantic.json": {
+   "bytes": 874462
+  },
+  "temp30-navy.json": {
+   "bytes": 325899,
+   "sha256": "c4b1534425e7ef267a84d7e78e6f9079cb49b16cd2f753090e44623ebaa251bb"
+  }
+ },
+ "tiles": {
+  "tiles-temp30-navy": {
+   "state": "kept",
+   "reason": null
+  }
+ }
+}
